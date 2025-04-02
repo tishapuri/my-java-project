@@ -27,8 +27,6 @@ jobs:
           gem install bundler
           bundle install
 
-      - name: Install Fastlane
-        run: gem install fastlane
       
     
 
