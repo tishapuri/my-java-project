@@ -1,5 +1,5 @@
 
-name: iOS Build and Deploy 
+name: SAST Scanning
 
 on:
   push:
