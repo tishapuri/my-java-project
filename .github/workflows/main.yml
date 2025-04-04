@@ -1,5 +1,4 @@
-
-name: SAST Scanning
+name: Code smell testing 
 
 on:
   push:
@@ -11,43 +10,22 @@ on:
 
 jobs:
   build:
-    runs-on: macos-latest
+    runs-on: ubuntu-latest
 
     steps:
       - name: Checkout code
         uses: actions/checkout@v3
-
-      - name: Set up Ruby
-        uses: ruby/setup-ruby@v1
-        with:
-          ruby-version: '3.1.0'
-
-
-      
-    
-
-    
-      - name: Install SonarScanner CLI
-        run: |
         
-          curl -OL https://binaries.sonarsource.com/Distribution/sonar-scanner-cli/sonar-scanner-cli-7.0.2.4839-macosx-x64.zip
-          unzip sonar-scanner-cli-7.0.2.4839-macosx-x64.zip
-          export PATH=$PATH:$(pwd)/sonar-scanner-7.0.2.4839-macosx-x64/bin
-          echo "PATH: $PATH"
-          echo "SonarScanner path: $(which sonar-scanner)"
-          sonar-scanner --version  
-      - name: SonarCloud Scan
-        run: |
-          echo "Current working directory: $(pwd)"
-          export JAVA_HOME=$JAVA_HOME
-          export PATH=$JAVA_HOME/bin:$PATH
-          echo "testing java home: $JAVA_HOME"
-          $(pwd)/sonar-scanner-7.0.2.4839-macosx-x64/bin/sonar-scanner \
-            -Dsonar.projectKey=tishapuri_demo \
-            -Dsonar.organization=iosdemo \
-            -Dsonar.host.url=https://sonarcloud.io \
-            -Dsonar.login=9363ceb8b3189da6f03891a31b6b2a54cba433c1  
-      
+      - name: Set up JDK 11 and Maven
+        uses: actions/setup-java@v3
+        with:
+          java-version: '17'
+          distribution: 'temurin'
+          cache: 'maven'
+      - name: Build with Maven
+        run: mvn clean install
+      - name: quality scan using maven
+        run: mvn sonar:sonar -Dsonar.projectKey=iosdemo_code-smell -Dsonar.organization=iosdemo -Dsonar.host.url=https://sonarcloud.io -Dsonar.login=9363ceb8b3189da6f03891a31b6b2a54cba433c1
+     
           
-
       
