@@ -1,5 +1,3 @@
-### Example Java Code with Code Smells
-
 public class OrderProcessor {
 
     public void processOrder(Order order) {
@@ -41,6 +39,42 @@ public class OrderProcessor {
     }
 
     private void generateInvoice(Order order) {
+        Invoice invoice = new Invoice(order);
+        invoice.generate();
+    }
+
+    // Introduced duplication and maintainability issues
+    private void validateOrderAgain(Order order) {
+        // validation logic
+        if (order == null) {
+            throw new IllegalArgumentException("Order cannot be null");
+        }
+        if (order.getItems().isEmpty()) {
+            throw new IllegalArgumentException("Order must contain items");
+        }
+    }
+
+    private void calculateTotalAgain(Order order) {
+        double total = 0;
+        for (Item item : order.getItems()) {
+            total += item.getPrice();
+        }
+        order.setTotal(total);
+    }
+
+    private void applyDiscountAgain(Order order) {
+        if (order.getTotal() > 100) {
+            order.setTotal(order.getTotal() * 0.9); // 10% discount
+        }
+    }
+
+    private void updateInventoryAgain(Order order) {
+        for (Item item : order.getItems()) {
+            Inventory.update(item.getId(), item.getQuantity());
+        }
+    }
+
+    private void generateInvoiceAgain(Order order) {
         Invoice invoice = new Invoice(order);
         invoice.generate();
     }
