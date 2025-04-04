@@ -1,31 +1,31 @@
-name: Code smell testing 
 
 on:
   push:
     branches:
-      - master
+      - main
   pull_request:
     branches:
-      - master
+      - main
 
 jobs:
-  build:
+  sonarqube:
     runs-on: ubuntu-latest
 
     steps:
       - name: Checkout code
         uses: actions/checkout@v3
-        
-      - name: Set up JDK 11 and Maven
+
+      - name: Set up JDK 17
         uses: actions/setup-java@v3
         with:
           java-version: '17'
           distribution: 'temurin'
-          cache: 'maven'
-      - name: Build with Maven
-        run: mvn clean install
-      - name: quality scan using maven
-        run: mvn sonar:sonar -Dsonar.projectKey=iosdemo_code-smell -Dsonar.organization=iosdemo -Dsonar.host.url=https://sonarcloud.io -Dsonar.login=9363ceb8b3189da6f03891a31b6b2a54cba433c1
-     
-          
-      
+
+      - name: Install SonarScanner
+        run: |
+          curl -sSLo sonar-scanner.zip https://binaries.sonarsource.com/Distribution/sonar-scanner-cli/sonar-scanner-cli-4.6.2.2472-linux.zip
+          unzip sonar-scanner.zip -d $HOME
+          export PATH="$HOME/sonar-scanner-4.6.2.2472-linux/bin:$PATH"
+
+      - name: Run SonarQube Scan
+        run: sonar-scanner -Dsonar.projectKey=iosdemo_code-smell -Dsonar.organization=iosdemo -Dsonar.host.url=https://sonarcloud.io -Dsonar.login=9363ceb8b3189da6f03891a31b6b2a54cba433c1
