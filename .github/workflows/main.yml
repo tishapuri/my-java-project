@@ -21,6 +21,8 @@ jobs:
           distribution: 'temurin'  
           java-version: '17'
 
+      - name: Set JAVA_HOME
+        run: echo "JAVA_HOME=/path/to/jdk-17" >> $GITHUB_ENV
 
       - name: Install SonarScanner
         run: |
