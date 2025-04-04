@@ -23,7 +23,13 @@ jobs:
 
       - name: Set JAVA_HOME
         run: echo "JAVA_HOME=/opt/hostedtoolcache/Java_Temurin-Hotspot_jdk/17.0.14-7/x64" >> $GITHUB_ENV
-
+      - name: Build with Maven
+        run: mvn clean install
+      - name: quality scan using maven
+        run: mvn sonar:sonar -Dsonar.projectKey=iosdemo_code-smell -Dsonar.organization=iosdemo -Dsonar.host.url=https://sonarcloud.io -Dsonar.login=9363ceb8b3189da6f03891a31b6b2a54cba433c1
+     
+          
+      
       - name: Install SonarScanner
         run: |
            wget https://binaries.sonarsource.com/Distribution/sonar-scanner-cli/sonar-scanner-cli-4.6.2.2472-linux.zip
