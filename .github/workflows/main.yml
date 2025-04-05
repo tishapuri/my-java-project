@@ -20,10 +20,19 @@ jobs:
         with:
           distribution: 'temurin'  
           java-version: '17'
-      - name: Run Snyk to check for vulnerabilities
-        uses: snyk/actions/node@master
-        env:
-          SNYK_TOKEN: a760824f-494f-4398-9077-dfea6f3904bb
+      - name: Set up Node.js
+        uses: actions/setup-node@v2
+        with:
+          node-version: '14'
+
+      - name: Install Snyk CLI
+        run: npm install -g snyk
+
+      - name: Authenticate Snyk
+        run: snyk auth a760824f-494f-4398-9077-dfea6f3904bb
+
+      - name: Run Snyk Test
+        run: snyk test 
       - name: Set JAVA_HOME
         run: echo "JAVA_HOME=/opt/hostedtoolcache/Java_Temurin-Hotspot_jdk/17.0.14-7/x64" >> $GITHUB_ENV
       - name: Build with Maven
