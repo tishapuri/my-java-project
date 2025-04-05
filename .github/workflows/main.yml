@@ -30,7 +30,8 @@ jobs:
 
       - name: Authenticate Snyk
         run: snyk auth a760824f-494f-4398-9077-dfea6f3904bb
-
+      - name: List all files
+        run: find .
       - name: Run Snyk Test
         run: snyk test 
       - name: Set JAVA_HOME
